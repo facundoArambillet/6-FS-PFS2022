@@ -20,11 +20,11 @@ export class Ciudad {
         return this.nombre;
     }
 
-    public setIdCiudad (nuevoId : number) {
+    public setIdCiudad (nuevoId : number) : void {
         this.idCiudad = nuevoId;
     }
 
-    public setNombre (nuevoNombre : string) {
+    public setNombre (nuevoNombre : string) : void {
         this.nombre = nuevoNombre;
     }
 }

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand text-light" href="./index.html">FullStack</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" aria-current="page" href="./ciudades.html">Ciudades</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" href="./escuelas.html">Escuelas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" href="./profesores.html"> Profesores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" href="./estudiantes.html">Estudiantes</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav  mb-2 mb-lg-0 offset-3">
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" aria-current="page" href="./index.html"> Carrito de
+                            compras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" href="./index.html">Contactatenos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" href="./index.html"> Mi perfil</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center text-dark"> Estudiantes</h1>
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Nombre</td>
+                <td>Fecha De Nacimiento</td>
+            </tr>
+        </thead>
+        <thead>
+            <tr>
+                <td><input type="text" id="id"></td>
+                <td><input type="text" id="nombre"></td>
+                <td><input type="text" id="fechaNacimiento"></td>
+            </tr>
+        </thead>
+        <td colspan="4">
+            <button type="button" id="btnAgregar">Agregar</button>
+            <button type="button" id="btnBuscar">Buscar</button>
+        </td>
+        <Tbody id="tablaEstudiantes"></Tbody>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
+        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+        crossorigin="anonymous"></script>
+
+        <script src="./js/estudiante.js"></script>
+</body>
+
+</html>
