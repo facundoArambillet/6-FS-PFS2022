@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/details.css">
 </head>
-
 <body>
     <nav class="navbar navbar-expand-lg bg-dark">
         <div class="container-fluid">
@@ -52,38 +50,29 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1 class="text-center text-dark"> Estudiantes</h1>
+                <h1 class="text-center text-dark"> Escuela Detail</h1>
             </div>
         </div>
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <td>ID</td>
-                <td>Nombre</td>
-                <td>Fecha De Nacimiento</td>
-            </tr>
-        </thead>
-        <thead>
-            <tr>
-                <td><input type="text" id="idEstudiante"></td>
-                <td><input type="text" id="nombre"></td>
-                <td><input type="text" id="fechaNacimiento"></td>
-            </tr>
-        </thead>
-        <td colspan="4">
-            <button type="button" id="btnAgregar">Agregar</button>
-            <button type="button" id="btnBuscar">Buscar</button>
-        </td>
-        <Tbody id="tablaEstudiantes"></Tbody>
-    </table>
-
+    <div class="contenedor">
+        <div class="titulo-datos">
+            <p>IDEscuela</p>
+            <p>Nombre</p>
+            <p>Domicilio</p>
+            <p>IDCiudad</p>
+        </div>
+        <div class="inputs-datos">
+            <input type="text" name="" value="" id="idEscuela">
+            <input type="text" name="" value="" id="nombre">
+            <input type="text" name="" value="" id="domicilio">
+            <input type="text" name="" value="" id="idCiudad">
+            <button id="btnGuardar">Guardar</button>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.min.js"
-        integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
-        crossorigin="anonymous"></script>
-
-        <script src="./js/estudiante.js"></script>
+    integrity="sha384-7VPbUDkoPSGFnVtYi0QogXtr74QeVeeIs99Qfg5YCF+TidwNdjvaKZX19NZ/e6oz"
+    crossorigin="anonymous"></script>
+    <script src="./js/escuelaDetail.js"></script>
 </body>
-
 </html>

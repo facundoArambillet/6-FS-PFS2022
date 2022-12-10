@@ -9,12 +9,13 @@ export class Estudiante {
     private apellidoNombres : string;
 
     @Column()
-    private fechaNacimiento : Date;
+    private fechaNacimiento : string;
 
-    constructor(id : number, nombre : string, fechaNacimiento : Date) {
+    constructor(id : number, nombre : string, fechaNacimiento : string) {
         this.idEstudiante = id;
         this.apellidoNombres = nombre;
         this.fechaNacimiento = fechaNacimiento;
+        
     }
 
     public getIdEstudiante () : number {
@@ -23,7 +24,7 @@ export class Estudiante {
     public getNombre () : string {
         return this.apellidoNombres;
     }
-    public getFechaNacimiento () : Date {
+    public getFechaNacimiento () : string {
         return this.fechaNacimiento;
     }
 
@@ -35,7 +36,15 @@ export class Estudiante {
         this.apellidoNombres = nuevoNombre;
     }
 
-    public setFechaNacimiento (nuevaFecha : Date) : void {
+    public setFechaNacimiento (nuevaFecha : string) : void {
         this.fechaNacimiento = nuevaFecha;
     }
+
+    /*
+    private calcularFecha() {
+        let fechaNacimiento = this.fechaNacimiento;
+        let fechas = fechaNacimiento.split("-")
+        this.fechaNacimiento = new Date(fechas[0],fechas[1],fechas[2])
+    }
+    */
 }
