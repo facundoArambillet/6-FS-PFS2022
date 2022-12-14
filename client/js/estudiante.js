@@ -7,14 +7,16 @@ agregar.addEventListener("click", agregarEstudiante);
 
 function mostrarEstudiantes() {
     let html = "";
-    let tabla = document.querySelector("#tablaEstudiantes")
+    let tabla = document.querySelector("#tablaEstudiantes");
+    let input = document.querySelector("#idEstudiante");
     for (let i = 0; i < estudiantes.length; i++) {
         html += `<tr>
         <td><a href="http://localhost:3000/estudianteDetail.html?idEstudiante=${estudiantes[i].idEstudiante}&apellidoNombres=${estudiantes[i].apellidoNombres}&fechaNacimiento=${estudiantes[i].fechaNacimiento}">${estudiantes[i].idEstudiante}</a> </td>
         <td>${estudiantes[i].apellidoNombres}</td>
-        <td>${estudiantes[i].fechaNacimiento}</td>
-        <td><button class= "btnBorrar">Borrar</button></td>
+        <td>${estudiantes[i].fechaNacimiento.substr(0,10)}</td>
+        <td><button class= "btnBorrar" value ="${estudiantes[i].idEstudiante}">Borrar</button></td>
         </tr>`
+        input.value = (estudiantes[i].idEstudiante +1);
     }
     tabla.innerHTML = html;
     deleteEstudiante(".btnBorrar")
@@ -32,7 +34,7 @@ async function mostrarEstudiante() {
         <td><a href="http://localhost:3000/estudianteDetail.html?idEstudiante=${estudiantes[i].idEstudiante}&apellidoNombres=${estudiantes[i].apellidoNombres}&fechaNacimiento=${estudiantes[i].fechaNacimiento}">${estudiantes[i].idEstudiante}</a> </td>
         <td>${estudiantes.apellidoNombres}</td>
         <td>${estudiantes.fechaNacimiento}</td>
-        <td><button class= "btnBorrar">Borrar</button></td>
+        <td><button class= "btnBorrar" value="${estudiantes[i].idEstudiante}">Borrar</button></td>
         </tr>`
         tabla.innerHTML = html;
     }
@@ -43,7 +45,7 @@ async function agregarEstudiante() {
     let nombre = document.querySelector("#nombre").value;
     let fechaNacimiento = document.querySelector("#fechaNacimiento").value;
     let renglon = {
-        "idEstudiante": Number(idEstudiante),
+        "idEstudiante": idEstudiante,
         "apellidoNombres": nombre,
         "fechaNacimiento": fechaNacimiento
     }
@@ -72,7 +74,7 @@ async function deleteEstudiante(clase) {
             let renglon = {
                 "idEstudiante": Number(i + 1)
             }
-            let respuesta = await fetch("/estudiante", {
+            let respuesta = await fetch(`/estudiante/${btns[i].value}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(renglon)

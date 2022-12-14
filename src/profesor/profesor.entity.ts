@@ -1,30 +1,31 @@
-import {Entity,PrimaryColumn, Column} from "typeorm";
+import Clase from "src/clase/clase.entity";
+import { Entity, PrimaryColumn, Column, OneToMany, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("profesores")
 export class Profesor {
-    @PrimaryColumn()
-    private idProfesor : number;
+    @PrimaryGeneratedColumn()
+    private idProfesor: number;
 
     @Column()
-    private apellidoNombres : string;
+    private apellidoNombres: string;
 
-    constructor(id : number, nombre : string) {
-        this.idProfesor = id;
+    @OneToMany(type => Clase,
+        clases => clases.profesor)
+    @JoinColumn()
+    public clases: Clase[];
+
+    constructor(nombre: string) {
         this.apellidoNombres = nombre;
     }
 
-    public getIdProfesor () : number {
+    public getIdProfesor(): number {
         return this.idProfesor;
     }
-    public getNombre () : string {
+    public getNombre(): string {
         return this.apellidoNombres;
     }
 
-    public setIdProfesor (nuevoId : number) : void {
-        this.idProfesor = nuevoId;
-    }
-
-    public setNombre (nuevoNombre : string) : void {
+    public setNombre(nuevoNombre: string): void {
         this.apellidoNombres = nuevoNombre;
     }
 }

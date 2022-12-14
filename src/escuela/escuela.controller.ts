@@ -10,20 +10,24 @@ export class EscuelaController {
     public getAll(): Promise<Escuela[]> {
         return this.escuelaService.getAll();
     }
-    @Get(":id")
-    public getById(@Param("id") id : number): Promise<Escuela> {
+    @Get("/escuelas/:orden")
+    public getAllOnlyEscuelas(@Param("orden") orden : string): Promise<Escuela[]> {
+        return this.escuelaService.getAllOnlyEscuelas(orden);
+    }
+    @Get(":idEscuela")
+    public getById(@Param("idEscuela") id : number): Promise<Escuela> {
         return this.escuelaService.getById(id);
     }
     @Post()
     public addEscuela(@Body() escuela : EscuelaDTO): Promise<Escuela>{
     return this.escuelaService.addEscuela(escuela);
     }
-    @Put()
-    public updateEscuela(@Body() escuela: EscuelaDTO): Promise<Escuela> {
-        return this.escuelaService.updateEscuela(escuela);
+    @Put(":idEscuela")
+    public updateEscuela(@Param("idEscuela") id: number, @Body() escuela: EscuelaDTO): Promise<Escuela> {
+        return this.escuelaService.updateEscuela(id,escuela);
     }
-    @Delete()
-    public deleteEscuela(@Body() escuela: EscuelaDTO): Promise<boolean> {
-        return this.escuelaService.deleteEscuela(escuela);
+    @Delete(":idEscuela")
+    public deleteEscuela(@Param("idEscuela") id : number): Promise<boolean> {
+        return this.escuelaService.deleteEscuela(id);
     }
 }

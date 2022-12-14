@@ -37,7 +37,7 @@ export class EstudianteService {
     public async addEstudiante(estudianteDTO: EstudianteDTO): Promise<Estudiante> {
         try {
             let estudiante: Estudiante = await this.estudianteRepository.save(new Estudiante(
-                estudianteDTO.idEstudiante, estudianteDTO.apellidoNombres, estudianteDTO.fechaNacimiento
+                 estudianteDTO.apellidoNombres, estudianteDTO.fechaNacimiento
                 
             ));
             if (estudiante)
@@ -52,14 +52,13 @@ export class EstudianteService {
         }
     }
 
-    public async updateEstudiante(estudianteDTO: EstudianteDTO): Promise<Estudiante> {
+    public async updateEstudiante(id: number,estudianteDTO: EstudianteDTO): Promise<Estudiante> {
         try {
-            let criterio: FindOneOptions = { where: { idEstudiante: estudianteDTO.idEstudiante } };
+            let criterio: FindOneOptions = { where: { idEstudiante: id } };
             let estudiante: Estudiante = await this.estudianteRepository.findOne(criterio);
             if (!estudiante)
                 throw new Error('No se encuentra el estudiante');
             else {
-                estudiante.setIdEstudiante(estudianteDTO.idEstudiante);
                 estudiante.setFechaNacimiento(estudianteDTO.fechaNacimiento);
                 estudiante.setNombre(estudianteDTO.apellidoNombres);
                 estudiante = await this.estudianteRepository.save(estudiante);
@@ -75,9 +74,9 @@ export class EstudianteService {
         }
     }
 
-    public async deleteEstudiante(estudianteDTO: EstudianteDTO): Promise<boolean> {
+    public async deleteEstudiante(id: number): Promise<boolean> {
         try {
-            let criterio: FindOneOptions = { where: { idEstudiante: estudianteDTO.idEstudiante } };
+            let criterio: FindOneOptions = { where: { idEstudiante: id } };
             let estudiante: Estudiante = await this.estudianteRepository.findOne(criterio);
             if (!estudiante) {
                 throw new Error('No se encuentra el estudiante');

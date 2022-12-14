@@ -10,20 +10,20 @@ export class EstudianteController {
     public getAll(): Promise<Estudiante[]> {
         return this.estudianteService.getAll();
     }
-    @Get(":id")
-    public getById(@Param("id") id : number): Promise<Estudiante> {
+    @Get(":idEstudiante")
+    public getById(@Param("idEstudiante") id : number): Promise<Estudiante> {
         return this.estudianteService.getById(id);
     }
     @Post()
     public addEscuela(@Body() estudiante : EstudianteDTO): Promise<Estudiante>{
     return this.estudianteService.addEstudiante(estudiante);
     }
-    @Put()
-    public updateEscuela(@Body() estudiante: EstudianteDTO): Promise<Estudiante> {
-        return this.estudianteService.updateEstudiante(estudiante);
+    @Put(":idEstudiante")
+    public updateEscuela(@Param("idEstudiante") id: number, @Body() estudiante: EstudianteDTO): Promise<Estudiante> {
+        return this.estudianteService.updateEstudiante(id,estudiante);
     }
-    @Delete()
-    public deleteEscuela(@Body() estudiante: EstudianteDTO): Promise<boolean> {
-        return this.estudianteService.deleteEstudiante(estudiante);
+    @Delete(":idEstudiante")
+    public deleteEscuela(@Param("idEstudiante") id: number): Promise<boolean> {
+        return this.estudianteService.deleteEstudiante(id);
     }
 }

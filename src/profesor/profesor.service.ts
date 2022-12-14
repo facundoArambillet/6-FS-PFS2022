@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {FindOneOptions, Repository} from "typeorm";
+import {FindManyOptions, FindOneOptions, Repository} from "typeorm";
 import { ProfesorDTO } from './profesor.dto';
 import { Profesor } from './profesor.entity';
 
@@ -11,11 +11,18 @@ export class ProfesorService {
     private readonly profesorRepository : Repository<Profesor>) {}
 
     public async getAll (): Promise<Profesor[]> {
-        this.profesores = await this.profesorRepository.find();
-    
+        let criterio: FindManyOptions = { relations: ["clases"] }
+        this.profesores = await this.profesorRepository.find(criterio);
         return this.profesores;
     }
 
+    public async getAllOnlyProfesores (orden: string): Promise<Profesor[]> {
+        let criterio: FindManyOptions = { order : {
+            apellidoNombres : "ASC"
+        } }
+        this.profesores = await this.profesorRepository.find(criterio);
+        return this.profesores;
+    }
     
     public async getById (id: number): Promise<Profesor> {
         try {
@@ -37,7 +44,7 @@ export class ProfesorService {
     public async addProfesor(profesorDTO: ProfesorDTO): Promise<Profesor> {
         try {
             let profesor: Profesor = await this.profesorRepository.save(new Profesor(
-                profesorDTO.idProfesor, profesorDTO.apellidoNombres
+                 profesorDTO.apellidoNombres
             ));
             if (profesor)
                 return profesor;
@@ -51,14 +58,13 @@ export class ProfesorService {
         }
     }
 
-    public async updateProfesor(profesorDTO: ProfesorDTO): Promise<Profesor> {
+    public async updateProfesor(id: number,profesorDTO: ProfesorDTO): Promise<Profesor> {
         try {
-            let criterio: FindOneOptions = { where: { idProfesor: profesorDTO.idProfesor } };
+            let criterio: FindOneOptions = { where: { idProfesor: id } };
             let profesor: Profesor = await this.profesorRepository.findOne(criterio);
             if (!profesor)
                 throw new Error('No se encuentra el Profesor');
             else {
-                profesor.setIdProfesor(profesorDTO.idProfesor);
                 profesor.setNombre(profesorDTO.apellidoNombres);
                 profesor = await this.profesorRepository.save(profesor);
                 return profesor;
@@ -72,9 +78,9 @@ export class ProfesorService {
         }
     }
 
-    public async deleteProfesor(profesorDTO: ProfesorDTO): Promise<boolean> {
+    public async deleteProfesor(id: number): Promise<boolean> {
         try {
-            let criterio: FindOneOptions = { where: {idProfesor: profesorDTO.idProfesor } };
+            let criterio: FindOneOptions = { where: {idProfesor: id } };
             let profesor: Profesor = await this.profesorRepository.findOne(criterio);
             if (!profesor) {
                 throw new Error('No se encuentra el Profesor');

@@ -7,25 +7,31 @@ agregar.addEventListener("click", agregarEscuela);
 
 function mostrarEscuelas() {
     let html = "";
-    let tabla = document.querySelector("#tablaEscuelas")
+    let tabla = document.querySelector("#tablaEscuelas");
+    let input = document.querySelector("#idEscuela");
     for (let i = 0; i < escuelas.length; i++) {
         html += `<tr>
-        <td><a href="http://localhost:3000/escuelaDetail.html?idEscuela=${escuelas[i].idEscuela}&nombre=${escuelas[i].nombre}&domicilio=${escuelas[i].domicilio}&idCiudad=${escuelas[i].idCiudad}">${escuelas[i].idEscuela}</a> </td>
+        <td><a href="http://localhost:3000/escuelaDetail.html?idEscuela=${escuelas[i].idEscuela}&nombre=${escuelas[i].nombre}&domicilio=${escuelas[i].domicilio}&idCiudad=${escuelas[i].ciudadIdCiudad}">${escuelas[i].idEscuela}</a> </td>
         <td>${escuelas[i].nombre}</td>
         <td>${escuelas[i].domicilio}</td>
-        <td>${escuelas[i].idCiudad}</td>
-        <td><button class= "btnBorrar">Borrar</button></td>
+        <td>${escuelas[i].ciudad.nombre}</td>
+        <td><button class= "btnBorrar" value="${escuelas[i].idEscuela}">Borrar</button></td>
         </tr>`
+
+        input.value = (escuelas[i].idEscuela + 1);
     }
+    console.log(escuelas)
     tabla.innerHTML = html;
     deleteEscuela(".btnBorrar");
+    crearOptionsCiudades();
+
 }
 
 async function mostrarEscuela() {
     let html = "";
-    let tabla = document.querySelector("#tablaEscuelas")
-    let idBuscado = document.querySelector("#id").value
-    let respuesta = await fetch(`/escuela/${idBuscado}`)
+    let tabla = document.querySelector("#tablaEscuelas");
+    let idBuscado = document.querySelector("#id").value;
+    let respuesta = await fetch(`/escuela/${idBuscado}`);
     if (respuesta.ok) {
         let json = await respuesta.json();
         escuelas = json;
@@ -40,16 +46,33 @@ async function mostrarEscuela() {
     }
 }
 
+async function crearOptionsCiudades() {
+    let section = document.querySelector("#ciudades");
+    section.innerHTML = "";
+    let respuesta = await fetch(`/ciudad/ciudades/ASC`);
+    if (respuesta.ok) {
+        let ciudades = await respuesta.json();
+        for (let i = 0; i < ciudades.length; i++) {
+            let option = document.createElement("option");
+            option.innerHTML = ciudades[i].nombre;
+            option.value = ciudades[i].idCiudad;
+            section.appendChild(option);
+
+        }
+    }
+}
+
 async function agregarEscuela() {
     let idEscuela = document.querySelector("#idEscuela").value;
     let nombre = document.querySelector("#nombre").value;
     let domicilio = document.querySelector("#domicilio").value;
-    let idCiudad = document.querySelector("#idCiudad").value;
+    let ciudad = document.querySelector("#ciudades");
+    let idCiudad = ciudad.value;
     let renglon = {
-        "idEscuela": Number(idEscuela),
+        "idEscuela": idEscuela,
         "nombre": nombre,
         "domicilio": domicilio,
-        "idCiudad": Number(idCiudad)
+        "idCiudad": idCiudad
     }
     console.log(renglon)
     let respuesta = await fetch("/escuela", {
@@ -75,13 +98,9 @@ async function deleteEscuela(clase) {
 
     for (let i = 0; i < btns.length; i++) {
         btns[i].addEventListener("click", async () => {
-            let renglon = {
-                "idEscuela": Number(i + 1)
-            }
-            let respuesta = await fetch("/escuela", {
+            let respuesta = await fetch(`/escuela/${btns[i].value}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(renglon)
             })
             if (respuesta.ok) {
                 loadEscuelas();
@@ -99,14 +118,11 @@ async function deleteEscuela(clase) {
 
 async function loadEscuelas() {
     escuelas = [];
-    let respuesta = await fetch("/escuela")
-
+    let respuesta = await fetch("/escuela");
     if (respuesta.ok) {
         let json = await respuesta.json();
         escuelas = json;
     }
-    console.log(escuelas);
     mostrarEscuelas();
 }
-
 loadEscuelas();

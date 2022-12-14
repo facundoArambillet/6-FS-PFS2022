@@ -31,6 +31,9 @@
                     <li class="nav-item">
                         <a class="nav-link active text-light" href="./estudiantes.html">Estudiantes</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active text-light" href="./clases.html">Clases</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav  mb-2 mb-lg-0 offset-3">
                     <li class="nav-item">
@@ -61,17 +64,20 @@
                 <td>ID</td>
                 <td>Nombre</td>
                 <td>Domicilio</td>
-                <td>IDCiudad</td>
+                <td>Ciudades</td>
             </tr>
         </thead>
         <thead>
             <tr>
-                <td><input type="text" id="idEscuela"></td>
+                <td><input type="text" id="idEscuela" disabled></td>
                 <td><input type="text" id="nombre"></td>
                 <td><input type="text" id="domicilio"></td>
-                <td><input type="text" id="idCiudad"></td>
+                <td><select name="" id="ciudades" style="height: 30px;">
+                </select></td>
+
             </tr>
         </thead>
+
         <td colspan="4">
             <button type="button" id="btnAgregar">Agregar</button>
             <button type="button" id="btnBuscar">Buscar</button>

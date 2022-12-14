@@ -15,7 +15,7 @@ function processParams() {
 processParams();
 
 document.querySelector("#idEstudiante").value = params["idEstudiante"];
-params["apellidoNombres"]= params.apellidoNombres.replaceAll("%20"," ");
+params["apellidoNombres"] = params["apellidoNombres"].replace(/%20/g, " ");
 document.querySelector("#nombre").value = params["apellidoNombres"];
 document.querySelector("#fecha").value = params["fechaNacimiento"];
 
@@ -25,12 +25,12 @@ async function guardar() {
     let valorNombre = document.querySelector("#nombre").value;
     let valorFecha = document.querySelector("#fecha").value;
     let renglon = {
-        "idEstudiante": Number(valorId),
+        "idEstudiante": valorId,
         "apellidoNombres": valorNombre,
         "fechaNacimiento": valorFecha
     }
-
-    let respuesta = await fetch("/estudiante", {
+    console.log(params["idEstudiante"])
+    let respuesta = await fetch(`/estudiante/${params["idEstudiante"]}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

@@ -8,13 +8,15 @@ agregar.addEventListener("click", agregarProfesor);
 
 function mostrarProfesores() {
     let html = "";
-    let tabla = document.querySelector("#tablaProfesores")
+    let tabla = document.querySelector("#tablaProfesores");
+    let input = document.querySelector("#idProfesor");
     for (let i = 0; i < profesores.length; i++) {
         html += `<tr>
         <td><a href="http://localhost:3000/profesorDetail.html?idProfesor=${profesores[i].idProfesor}&apellidoNombres=${profesores[i].apellidoNombres}">${profesores[i].idProfesor}</a> </td>
         <td>${profesores[i].apellidoNombres}</td>
-        <td><button class= "btnBorrar">Borrar</button></td>
+        <td><button class= "btnBorrar" value="${profesores[i].idProfesor}">Borrar</button></td>
         </tr>`
+        input.value = (profesores[i].idProfesor +1);
     }
     tabla.innerHTML = html;
     deleteProfesor(".btnBorrar");
@@ -31,7 +33,7 @@ async function mostrarProfesor() {
         html += `<tr>
         <td><a href="http://localhost:3000/profesorDetail.html?idProfesor=${profesores[i].idProfesor}&apellidoNombres=${profesores[i].apellidoNombres}">${profesores[i].idProfesor}</a> </td>
         <td>${profesores.apellidoNombres}</td>
-        <td><button class= "btnBorrar">Borrar</button></td>
+        <td><button class= "btnBorrar" value="${profesores[i].idProfesor}">Borrar</button></td>
         </tr>`
         tabla.innerHTML = html;
     }
@@ -41,7 +43,7 @@ async function agregarProfesor() {
     let idProfesor = document.querySelector("#idProfesor").value;
     let nombre = document.querySelector("#nombre").value;
     let renglon = {
-        "idProfesor": Number(idProfesor),
+        "idProfesor": idProfesor,
         "apellidoNombres": nombre
     }
     let respuesta = await fetch("/profesor", {
@@ -66,13 +68,9 @@ async function deleteProfesor(clase) {
 
     for (let i = 0; i < btns.length; i++) {
         btns[i].addEventListener("click", async () => {
-            let renglon = {
-                "idProfesor": Number(i + 1)
-            }
-            let respuesta = await fetch("/profesor", {
+            let respuesta = await fetch(`/profesor/${btns[i].value}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(renglon)
             })
             if (respuesta.ok) {
                 loadProfesores();

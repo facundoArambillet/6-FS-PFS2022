@@ -9,17 +9,18 @@ agregar.addEventListener("click", agregarCiudad);
 
 function mostrarCiudades() {
     let html = "";
-    let tabla = document.querySelector("#tablaCiudades")
+    let tabla = document.querySelector("#tablaCiudades");
+    let input = document.querySelector("#id");
     for (let i = 0; i < ciudades.length; i++) {
         html += `<tr>
         <td><a href="http://localhost:3000/ciudadDetail.html?idCiudad=${ciudades[i].idCiudad}&nombre=${ciudades[i].nombre}">${ciudades[i].idCiudad}</a> </td>
         <td>${ciudades[i].nombre}</td>
-        <td><button class= "btnBorrar" pos="${i}">Borrar</button></td>
+        <td><button class="btnBorrar" value="${ciudades[i].idCiudad}">Borrar</button></td>
         </tr>`;
+        input.value = (ciudades[i].idCiudad +1);
     }
     tabla.innerHTML = html;
     deleteCiudad(".btnBorrar");
-    //updateCiudad(".btnActualizar");
 }
 
 async function mostrarCiudad() {
@@ -68,17 +69,13 @@ async function agregarCiudad() {
 
 async function deleteCiudad(clase) {
     let btns = document.querySelectorAll(clase);
-
     for (let i = 0; i < btns.length; i++) {
         btns[i].addEventListener("click", async () => {
-            let renglon = {
-                "idCiudad": Number(i + 1)
-            }
-            let respuesta = await fetch("/ciudad", {
+            let respuesta = await fetch(`/ciudad/${btns[i].value}`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(renglon)
             })
+            console.log(respuesta)
             if (respuesta.ok) {
                 loadCiudades();
                 console.log("Ciudad borrada");
@@ -91,35 +88,12 @@ async function deleteCiudad(clase) {
 
 }
 
-/*
-async function updateCiudad() {
-    let btns = document.querySelectorAll(clase);
-    for (let i = 0; i < btns.length; i++) {
-        btns[i].addEventListener("click", async () => {
-            let renglon = {
-                "idCiudad": Number(i + 1)
-            }
-            let respuesta = await fetch("/ciudad", {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(renglon)
-            })
-            if (respuesta.ok) {
-                loadCiudades();
-                console.log("Ciudad Actualizada");
-            }
-            else {
-                console.log("Error en la Actualizacion");
-            }
-        })
-    }
-}
-*/
+
+
 
 async function loadCiudades() {
     ciudades = [];
     let respuesta = await fetch("/ciudad")
-    console.log(respuesta)
     if (respuesta.ok) {
         let json = await respuesta.json();
         ciudades = json;

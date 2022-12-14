@@ -25,11 +25,11 @@ async function guardar() {
     let valorNombre = document.querySelector("#nombre").value;
 
     let renglon = {
-        "idProfesor": Number(valorId),
+        "idProfesor": valorId,
         "apellidoNombres": valorNombre
     }
 
-    let respuesta = await fetch("/profesor", {
+    let respuesta = await fetch(`/profesor/${params["idProfesor"]}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'

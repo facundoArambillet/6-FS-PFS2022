@@ -1,8 +1,8 @@
-import {Entity,PrimaryColumn, Column} from "typeorm";
+import {Entity,PrimaryColumn, Column, PrimaryGeneratedColumn} from "typeorm";
 
 @Entity("estudiantes")
 export class Estudiante {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     private idEstudiante : number;
 
     @Column()
@@ -11,8 +11,7 @@ export class Estudiante {
     @Column()
     private fechaNacimiento : string;
 
-    constructor(id : number, nombre : string, fechaNacimiento : string) {
-        this.idEstudiante = id;
+    constructor(nombre : string, fechaNacimiento : string) {
         this.apellidoNombres = nombre;
         this.fechaNacimiento = fechaNacimiento;
         
@@ -28,9 +27,6 @@ export class Estudiante {
         return this.fechaNacimiento;
     }
 
-    public setIdEstudiante (nuevoId : number) : void {
-        this.idEstudiante = nuevoId;
-    }
 
     public setNombre (nuevoNombre : string) : void {
         this.apellidoNombres = nuevoNombre;

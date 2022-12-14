@@ -10,6 +10,10 @@ export class ProfesorController {
     public getAll(): Promise<Profesor[]> {
         return this.profesorService.getAll();
     }
+    @Get("profesores/:orden")
+    public getAllOnlyProfesores(@Param("orden") orden : string): Promise<Profesor[]> {
+        return this.profesorService.getAllOnlyProfesores(orden);
+    }
     @Get(":id")
     public getById(@Param("id") id : number): Promise<Profesor> {
         return this.profesorService.getById(id);
@@ -18,12 +22,12 @@ export class ProfesorController {
     public addEscuela(@Body() profesor : ProfesorDTO): Promise<Profesor>{
     return this.profesorService.addProfesor(profesor);
     }
-    @Put()
-    public updateEscuela(@Body() profesor: ProfesorDTO): Promise<Profesor> {
-        return this.profesorService.updateProfesor(profesor);
+    @Put(":idEscuela")
+    public updateEscuela(@Param("idEscuela") id: number,@Body() profesor: ProfesorDTO): Promise<Profesor> {
+        return this.profesorService.updateProfesor(id,profesor);
     }
-    @Delete()
-    public deleteEscuela(@Body() profesor: ProfesorDTO): Promise<boolean> {
-        return this.profesorService.deleteProfesor(profesor);
+    @Delete(":idEscuela")
+    public deleteEscuela(@Param("idEscuela") id: number,): Promise<boolean> {
+        return this.profesorService.deleteProfesor(id);
     }
 }

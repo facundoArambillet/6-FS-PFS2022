@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, FindOptionsSelect, Repository } from "typeorm";
+import { FindManyOptions, FindOneOptions, Repository } from "typeorm";
 import { CiudadDTO } from './ciudad.dto';
 import { Ciudad } from './ciudad.entity';
 
@@ -11,10 +11,28 @@ export class CiudadService {
     private readonly ciudadRepository: Repository<Ciudad>) { }
 
     public async getAll(): Promise<Ciudad[]> {
-        this.ciudades = await this.ciudadRepository.find();
+        let criterio: FindManyOptions = { relations: ['escuelas'] }
+        this.ciudades = await this.ciudadRepository.find(criterio);
         return this.ciudades;
     }
+/*
+    public async ultimoId() {
+        const result = await this.ciudadRepository
+            .createQueryBuilder('ciudades')
+            .addSelect('MAX(ciudades.idCiudad)', 'maxIdCiudad')
+            .getRawOne();
 
+        console.log(result);
+        return result;
+    }
+*/
+    public async getAllOnlyCiudades(orden : string): Promise<Ciudad[]> {
+        let criterio : FindManyOptions = {order: {
+            nombre : orden
+        } };
+        this.ciudades = await this.ciudadRepository.find(criterio);
+        return this.ciudades;
+    }
 
     public async getById(id: number): Promise<Ciudad> {
         try {
@@ -36,7 +54,7 @@ export class CiudadService {
     public async addCiudad(ciudadDTO: CiudadDTO): Promise<Ciudad> {
         try {
             let ciudad: Ciudad = await this.ciudadRepository.save(new Ciudad(
-                ciudadDTO.idCiudad, ciudadDTO.nombre
+                ciudadDTO.nombre
             ));
             if (ciudad)
                 return ciudad;
@@ -50,14 +68,13 @@ export class CiudadService {
         }
     }
 
-    public async updateCiudad(ciudadDTO: CiudadDTO): Promise<Ciudad> {
+    public async updateCiudad(id: number, ciudadDTO: CiudadDTO): Promise<Ciudad> {
         try {
-            let criterio: FindOneOptions = { where: { idCiudad: ciudadDTO.idCiudad } };
+            let criterio: FindOneOptions = { where: { idCiudad: id } };
             let ciudad: Ciudad = await this.ciudadRepository.findOne(criterio);
             if (!ciudad)
                 throw new Error('No se encuentra la ciudad');
             else {
-                ciudad.setIdCiudad(ciudadDTO.idCiudad);
                 ciudad.setNombre(ciudadDTO.nombre);
                 ciudad = await this.ciudadRepository.save(ciudad);
                 return ciudad;
@@ -71,9 +88,9 @@ export class CiudadService {
         }
     }
 
-    public async deleteCiudad(ciudadDTO: CiudadDTO): Promise<boolean> {
+    public async deleteCiudad(id: number): Promise<boolean> {
         try {
-            let criterio: FindOneOptions = { where: { idCiudad: ciudadDTO.idCiudad } };
+            let criterio: FindOneOptions = { where: { idCiudad: id } };
             let ciudad: Ciudad = await this.ciudadRepository.findOne(criterio);
             if (!ciudad) {
                 throw new Error('No se encuentra la ciudad');

@@ -1,50 +1,59 @@
-import {Entity,PrimaryColumn, Column} from "typeorm";
+import { Ciudad } from "src/ciudad/ciudad.entity";
+import Clase from "src/clase/clase.entity";
+import { Entity, PrimaryColumn, Column, OneToMany, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("escuelas")
 export class Escuela {
-    @PrimaryColumn()
-    private idEscuela : number;
+    @PrimaryGeneratedColumn()
+    private idEscuela: number;
 
     @Column()
-    private nombre : string;
+    private nombre: string;
 
     @Column()
-    private domicilio : string;
+    private domicilio: string;
 
     @Column()
-    private idCiudad : number;
+    private ciudadIdCiudad: number;
 
-    constructor(idEscuela : number, nombre : string, domicilio : string, idCiudad : number) {
-        this.idEscuela = idEscuela;
+    @ManyToOne(type => Ciudad,
+        ciudad => ciudad.escuelas)
+    @JoinColumn()
+    public ciudad: Ciudad;
+
+    @OneToMany(type => Clase,
+        clase => clase.escuela)
+    @JoinColumn()
+    public clases: Clase[];
+
+
+    constructor(nombre: string, domicilio: string, ciudad: number) {
         this.nombre = nombre;
         this.domicilio = domicilio;
-        this.idCiudad = idCiudad;
+        this.ciudadIdCiudad = ciudad;
     }
 
-    public getIdEscuela () : number {
+    public getIdEscuela(): number {
         return this.idEscuela
     }
-    public getNombre () : string {
+    public getNombre(): string {
         return this.nombre;
     }
-    public getDomicilio () : string {
+    public getDomicilio(): string {
         return this.domicilio;
     }
-    public getIdCiudad() : number {
+/*
+    public getIdCiudad(): number {
         return this.idCiudad;
     }
-
-
-    public setIdEscuela (nuevoId : number) : void {
-        this.idEscuela = nuevoId;
-    }
-    public setNombre (nuevoNombre : string) : void {
+*/
+    public setNombre(nuevoNombre: string): void {
         this.nombre = nuevoNombre;
     }
-    public setDomicilio (nuevoDomicilio : string) : void {
+    public setDomicilio(nuevoDomicilio: string): void {
         this.domicilio = nuevoDomicilio;
     }
-    public setIdCiudad (nuevoIdCiudad : number) : void {
-        this.idCiudad = nuevoIdCiudad;
+    public setIdCiudad(nuevaCiudad : number ): void {
+        this.ciudadIdCiudad = nuevaCiudad;
     }
 }
