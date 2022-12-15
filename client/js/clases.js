@@ -10,8 +10,10 @@ function mostrarClases() {
     let tabla = document.querySelector("#tablaClases");
     let input = document.querySelector("#idClases");
     for (let i = 0; i < clases.length; i++) {
+
+        let nombreEstudiantes = cargarEstudiantesUrl(clases[i].estudiantes);
         html += `<tr>
-        <td><a href="http://localhost:3000/claseDetail.html?idClase=${clases[i].idClase}&nombre=${clases[i].nombre}&idEscuela=${clases[i].escuelaIdEscuela}&idProfesor=${clases[i].profesorIdProfesor}">${clases[i].idClase}</a> </td>
+        <td><a href="http://localhost:3000/claseDetail.html?idClase=${clases[i].idClase}&nombre=${clases[i].nombre}&idEscuela=${clases[i].escuelaIdEscuela}&idProfesor=${clases[i].profesorIdProfesor}&Estudiantes=${nombreEstudiantes}">${clases[i].idClase}</a> </td>
         <td>${clases[i].nombre}</td>
         <td>${clases[i].escuela.nombre}</td>
         <td>${clases[i].profesor.apellidoNombres}</td>
@@ -27,6 +29,17 @@ function mostrarClases() {
 
 }
 
+function cargarEstudiantesUrl(arr) {
+    nombreEstudiantes = '';
+    for (let i = 0; i < arr.length; i++) {
+        if (i !== arr.length - 1) {
+            nombreEstudiantes += arr[i]?.apellidoNombres + ','
+        } else {
+            nombreEstudiantes += arr[i]?.apellidoNombres;
+        }
+    }
+    return nombreEstudiantes;
+}
 async function mostrarClase() {
     let html = "";
     let tabla = document.querySelector("#tablaClases");
@@ -36,7 +49,7 @@ async function mostrarClase() {
         let json = await respuesta.json();
         clases = json;
         html += `<tr>
-        <td><a href="http://localhost:3000/claseDetail.html?idClase=${clases[i].idClase}&nombre=${clases[i].nombre}&idEscuela=${clases[i].escuelaIdEscuela}&idProfesor=${clases[i].profesorIdProfesor}">${clases[i].idClase}</a> </td>
+        <td><a href="http://localhost:3000/claseDetail.html?idClase=${clases[i].idClase}&nombre=${clases[i].nombre}&idEscuela=${clases[i].escuelaIdEscuela}&idProfesor=${clases[i].profesorIdProfesor}&idEstudiantes=${clases[i].estudiantes}">${clases[i].idClase}</a> </td>
         <td>${clases.nombre}</td>
         <td>${clases.escuela.nombre}</td>
         <td>${clases.profesor.nombre}</td>
@@ -137,6 +150,7 @@ async function loadClases() {
     if (respuesta.ok) {
         let json = await respuesta.json();
         clases = json;
+        console.log(clases)
     }
     mostrarClases();
 }

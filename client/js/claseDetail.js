@@ -12,6 +12,7 @@ function processParams() {
     }
     crearOptionsEscuelas();
     crearOptionsProfesores();
+    crearlistaEstudiantes();
 }
 
 async function crearOptionsEscuelas() {
@@ -52,6 +53,30 @@ async function crearOptionsProfesores() {
     }
 }
 
+function crearlistaEstudiantes() {
+    let divEstudiantes = document.querySelector("#estudiantes");
+    if(params.Estudiantes) {
+        let ulEstudiantes = document.createElement("ul");
+        ulEstudiantes.id = "ulEstudiantes";
+        ulEstudiantes.innerHTML = "";
+        let estudiantes = params["Estudiantes"] = params.Estudiantes.replaceAll("%20"," ").split(",");
+        console.log(estudiantes)
+        for(let i = 0; i < estudiantes.length; i++) {
+            let liEstudiantes = document.createElement("li");
+            liEstudiantes.innerHTML = estudiantes[i];
+            ulEstudiantes.appendChild(liEstudiantes);
+            divEstudiantes.appendChild(ulEstudiantes);
+        }
+    }
+    else {
+        let parrafo = document.createElement("p");
+        parrafo.innerText = "Esta clase no posee estudiantes";
+        divEstudiantes.appendChild(parrafo);
+    }
+
+
+}
+
 processParams();
 
 document.querySelector("#idClase").value = params["idClase"];
@@ -60,7 +85,6 @@ document.querySelector("#nombre").value = params["nombre"];
 document.querySelector("#escuelas").value = params["idEscuela"];
 document.querySelector("#profesores").value = params["idProfesores"];
 
-console.log(params)
 
 async function guardar() {
     let valorIdClase = document.querySelector("#idClase").value;
@@ -91,11 +115,10 @@ async function guardar() {
     else {
         console.log("Error en la Actualizacion")
     }
-
+}
     async function loadClases() {
         clase = [];
-        let respuesta = await fetch("/clase")
-        console.log(respuesta)
+        let respuesta = await fetch("/clase");
         if (respuesta.ok) {
             let json = await respuesta.json();
             clase = json;
@@ -104,4 +127,3 @@ async function guardar() {
     }
 
     loadClases();
-}

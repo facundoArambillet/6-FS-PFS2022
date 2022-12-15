@@ -12,7 +12,9 @@ export class ClaseService {
    @InjectRepository(Estudiante) private readonly estudianteRepository: Repository<Estudiante>) { }
 
     public async getAll(): Promise<Clase[]> {
-        let criterio : FindManyOptions = { relations: [ "escuela" ,"profesor", "estudiantes"] }
+        let criterio : FindManyOptions = { relations: [ "escuela" ,"profesor", "estudiantes"] , order : {
+            idClase : "ASC"
+        }}
         this.clases = await this.claseRepository.find(criterio);
         return this.clases;
     }
