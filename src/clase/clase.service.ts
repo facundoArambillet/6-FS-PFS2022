@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Estudiante } from 'src/estudiante/estudiante.entity';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import ClaseDTO from './clase.dto';
 import Clase from './clase.entity';
@@ -7,11 +8,11 @@ import Clase from './clase.entity';
 @Injectable()
 export class ClaseService {
     private clases: Clase[] = [];
-    constructor(@InjectRepository(Clase)
-    private readonly claseRepository: Repository<Clase>) { }
+    constructor(@InjectRepository(Clase) private readonly claseRepository: Repository<Clase>,
+   @InjectRepository(Estudiante) private readonly estudianteRepository: Repository<Estudiante>) { }
 
     public async getAll(): Promise<Clase[]> {
-        let criterio : FindManyOptions = { relations: [ 'escuela' ,"profesor"] }
+        let criterio : FindManyOptions = { relations: [ "escuela" ,"profesor", "estudiantes"] }
         this.clases = await this.claseRepository.find(criterio);
         return this.clases;
     }
@@ -24,7 +25,7 @@ export class ClaseService {
 
     public async getById(id: number): Promise<Clase> {
         try {
-            const criterio: FindOneOptions = { where: { idClase: id } }
+            const criterio: FindOneOptions = { where: { idClase: id }, relations: [ "escuela" ,"profesor", "estudiantes"] }
             let clase: Clase = await this.claseRepository.findOne(criterio);
             if (clase) {
                 return clase;
@@ -42,8 +43,16 @@ export class ClaseService {
     public async addClase(claseDTO: ClaseDTO): Promise<Clase> {
         try {
             let clase: Clase = await this.claseRepository.save(new Clase(
-                 claseDTO.nombre, claseDTO.idEscuela, claseDTO.idProfesor
-            ));
+                claseDTO.nombre, claseDTO.idEscuela, claseDTO.idProfesor
+           ))
+           if(claseDTO.idEstudiantes) {
+            let estudiantesIDS: number[] = claseDTO.idEstudiantes;
+            let estudiantes: Estudiante[] = await this.estudianteRepository.findByIds(estudiantesIDS);
+            clase.estudiantes = estudiantes;
+            await this.claseRepository.save(clase)
+           }
+
+            // NO SE ME GUARDAN EN LA BDD Y NO SE ME MUESTRAN EN EL GET
             if (clase)
                 return clase;
             else

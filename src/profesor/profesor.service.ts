@@ -11,14 +11,16 @@ export class ProfesorService {
     private readonly profesorRepository : Repository<Profesor>) {}
 
     public async getAll (): Promise<Profesor[]> {
-        let criterio: FindManyOptions = { relations: ["clases"] }
+        let criterio: FindManyOptions = { relations: ["clases"], order:{
+            idProfesor : "ASC"
+        } }
         this.profesores = await this.profesorRepository.find(criterio);
         return this.profesores;
     }
 
     public async getAllOnlyProfesores (orden: string): Promise<Profesor[]> {
         let criterio: FindManyOptions = { order : {
-            apellidoNombres : "ASC"
+            apellidoNombres : orden
         } }
         this.profesores = await this.profesorRepository.find(criterio);
         return this.profesores;

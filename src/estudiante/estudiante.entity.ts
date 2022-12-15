@@ -1,4 +1,5 @@
-import {Entity,PrimaryColumn, Column, PrimaryGeneratedColumn} from "typeorm";
+import Clase from "src/clase/clase.entity";
+import {Entity,PrimaryColumn, Column, PrimaryGeneratedColumn, ManyToMany} from "typeorm";
 
 @Entity("estudiantes")
 export class Estudiante {
@@ -10,6 +11,9 @@ export class Estudiante {
 
     @Column()
     private fechaNacimiento : string;
+
+    @ManyToMany(type => Clase, clase => clase.estudiantes)
+    public clases: Clase[];
 
     constructor(nombre : string, fechaNacimiento : string) {
         this.apellidoNombres = nombre;
